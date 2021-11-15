@@ -23,10 +23,10 @@ WildRydes.map = WildRydes.map || {};
         var map = new Map({ basemap: 'gray-vector' });
 
         var view = new MapView({
-            center: [-97.31, 32.60],
+            center: [-97.16, 33.26],        //  Hello UNT
             container: 'map',
             map: map,
-            zoom: 12
+            zoom: 10
         });
 
         var pinSymbol = new TextSymbol({
