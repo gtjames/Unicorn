@@ -63,6 +63,7 @@ WildRydes.map = WildRydes.map || {};
                 //  If the city was entered extract weather based on that API else use the LatLon API result format
                 let wx = latLonToWeather(weather);
                 let innerHTML = '';
+                let msg;
                 //  We have converted the Lon Lat API (onecall) and City API (forecast) requests to the same format
                 for (let day of wx.daily) {
                     //  let's build a nice card for each day of the weather data
@@ -73,12 +74,12 @@ WildRydes.map = WildRydes.map || {};
                             <p>Chance of rain at ${day.pop}%</p>
                             <p>Wind at ${day.wind_speed} mph out of the ${day.windDirection}</p>
                             <p>Sunrise: ${day.sunrise} / Sunset: ${day.sunset}</p>`;
+                    msg = `${day.date} Tempis ${day.min}&deg. Chance of rain at ${day.pop}% Wind at ${day.wind_speed} mph out of the ${day.windDirection} Sunset will be at ${day.sunset}`
                     break;
                 }
                 displayUpdate(innerHTML);
                 let speech = new SpeechSynthesisUtterance();
 
-                let msg = `${day.date} Tempis ${day.min}&deg. Chance of rain at ${day.pop}% Wind at ${day.wind_speed} mph out of the ${day.windDirection} Sunset will be at ${day.sunset}`
 
                 speech.lang = "en-US";
                 speech.text = msg;
