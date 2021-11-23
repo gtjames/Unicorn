@@ -29,7 +29,9 @@ WildRydes.map = WildRydes.map || {};
                 }
             }),
             contentType: 'application/json',
-            success: completeRequest,
+            success:function ajaxSuccess(result) {
+                completeRequest(result, pickupLocation)
+            },
             error: function ajaxError(jqXHR, textStatus, errorThrown) {
                 console.error('Error requesting ride: ', textStatus, ', Details: ', errorThrown);
                 console.error('Response: ', jqXHR.responseText);
@@ -38,7 +40,7 @@ WildRydes.map = WildRydes.map || {};
         });
     }
 
-    function completeRequest(result) {
+    function completeRequest(result, pickupLocation) {
         var unicorn;
         var pronoun;
         console.log('Response received from API: ', result);

@@ -70,9 +70,7 @@ exports.handler = (event, context, callback) => {
 				Eta: '30 seconds',
 				Rider: username,
 			}),
-			headers: {
-				'Access-Control-Allow-Origin': '*',
-			},
+			headers: {'Access-Control-Allow-Origin': '*',},
 		});
 	}).catch((err) => {
 		console.error(err);
