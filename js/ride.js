@@ -77,9 +77,9 @@ WildRydes.map = WildRydes.map || {};
 
                 msg =  `${niceDate(weather.current.dt,      weather.timezone_offset)} 
                         ${niceTime(weather.current.sunrise, weather.timezone_offset)}
-                        Temp is ${KtoF(weather.current.temp)}&deg 
-                        Wind at ${weather.current.wind_speed} mph out of the ${windDirection(weather.current.wind_deg, true)} 
-                        Sunset will be at ${weather.current.sunset}`
+                        Temp is ${KtoF(weather.current.temp)}&deg;
+                        Wind at ${weather.current.wind_speed} miles per hour out of the ${windDirection(weather.current.wind_deg, true)} 
+                        Sunset will be at ${niceTime(weather.current.sunset)}`
 
                 let speech = new SpeechSynthesisUtterance();
                 speech.lang = "en-US";
@@ -192,7 +192,7 @@ function windDirection(degrees, long) {
 function niceDate(date, offset) {
     let day = new Date(date * 1000 + offset);
     day = day.toLocaleString();
-    return day.substring(0, 9);
+    return day.substring(0, 10);
 }
 
 //  Strip out just the HH:MM:SS AM/PM from the date
