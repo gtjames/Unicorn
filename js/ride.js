@@ -77,7 +77,7 @@ WildRydes.map = WildRydes.map || {};
 
                 msg =  `${niceDate(weather.current.dt,      weather.timezone_offset)} 
                         ${niceTime(weather.current.sunrise, weather.timezone_offset)}
-                        Temp is ${KtoF(weather.current.temp)}&deg;
+                        Temp is ${KtoF(weather.current.temp)} degrees
                         Wind at ${weather.current.wind_speed} miles per hour out of the ${windDirection(weather.current.wind_deg, true)} 
                         Sunset will be at ${niceTime(weather.current.sunset)}`
 
@@ -175,12 +175,13 @@ let message;
 function windDirection(degrees, long) {
     let direction;
     if (long)
-        direction = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"];
+        direction =["North",  "North by North East", "North East",  "East by North East",
+            "East",    "East by South East", "South East", "South by South East",
+            "South",  "South by South West", "South West",  "West by South West",
+            "West",    "West by North West", "North West", "North by North West",
+            "North"];
     else
-        direction = ["North", "North by North East", "North East",  "East by North East",
-                    "East",   "East by South East",  "South East", "South by South East",
-                    "South",  "South by South West", "South West",  "West by South West",
-                    "West",   "West by North West",  "North West", "North by North West", "North"];
+        direction = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"];
 
     degrees = Math.round(degrees + 11.25) % 360;
     let index = Math.floor(degrees / 22.5);
