@@ -1,5 +1,3 @@
-import {getLocation, KtoF, lat, locationRetrieved, lon, niceDate, niceTime, windDirection} from './utils.js';
-
 /*global WildRydes _config*/
 
 var WildRydes = window.WildRydes || {};
