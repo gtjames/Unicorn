@@ -73,8 +73,20 @@ WildRydes.map = WildRydes.map || {};
                             <p>Chance of rain at ${day.pop}%</p>
                             <p>Wind at ${day.wind_speed} mph out of the ${day.windDirection}</p>
                             <p>Sunrise: ${day.sunrise} / Sunset: ${day.sunset}</p>`;
+                    break;
                 }
                 displayUpdate(innerHTML);
+                let speech = new SpeechSynthesisUtterance();
+
+                let msg = `${day.date} Tempis ${day.min}&deg. Chance of rain at ${day.pop}% Wind at ${day.wind_speed} mph out of the ${day.windDirection} Sunset will be at ${day.sunset}`
+
+                speech.lang = "en-US";
+                speech.text = msg;
+                speech.volume = 1;
+                speech.rate = 1;
+                speech.pitch = 1;
+
+                window.speechSynthesis.speak(speech);
             });
     }
 
