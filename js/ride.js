@@ -73,22 +73,18 @@ WildRydes.map = WildRydes.map || {};
                         <p>Chance of rain at ${wx.daily[0].pop}%</p>
                         <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
                         <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
+                displayUpdate(innerHTML);
 
                 msg =  `${niceDate(weather.current.dt,      weather.timezone_offset)} 
                         ${niceTime(weather.current.sunrise, weather.timezone_offset)}
                         Temp is ${KtoF(weather.current.temp)}&deg 
-                        Wind at ${weather.current.wind_speed} mph out of the ${windDirection(weather.current.wind_deg)} 
+                        Wind at ${weather.current.wind_speed} mph out of the ${windDirection(weather.current.wind_deg, true)} 
                         Sunset will be at ${weather.current.sunset}`
-                displayUpdate(innerHTML);
+
                 let speech = new SpeechSynthesisUtterance();
-
-
                 speech.lang = "en-US";
                 speech.text = msg;
-                speech.volume = 1;
-                speech.rate = 1;
-                speech.pitch = 1;
-
+                speech.volume = speech.rate = speech.pitch = 1;
                 window.speechSynthesis.speak(speech);
             });
     }
@@ -100,11 +96,11 @@ WildRydes.map = WildRydes.map || {};
             min:            KtoF(d.temp.min),
             max:            KtoF(d.temp.max),
             sunrise:        niceTime(d.sunrise, data.timezone_offset),
-            sunset:         niceTime(d.sunset, data.timezone_offset),
+            sunset:         niceTime(d.sunset,  data.timezone_offset),
             icon:           d.weather[0].icon,
             description:    d.weather[0].description,
             wind_speed:     d.wind_speed.toFixed(0),
-            windDirection:  windDirection(d.wind_deg),
+            windDirection:  windDirection(d.wind_deg, false),
             pop:            (d.pop * 100).toFixed(0),
             feels_like:     KtoF(d.feels_like.day),
             dewPoint:       d.dew_point,
@@ -115,7 +111,6 @@ WildRydes.map = WildRydes.map || {};
         wx.lon  = data.lon;
         return wx;
     }
-
 
     // Register click handler for #request button
     $(function onDocReady() {
@@ -177,8 +172,15 @@ let message;
 //  We add 11.25 to push all directions 11.25 degrees clockwise
 //  Then we mod the degrees with 360 to force all results between 0 and 359
 //  finally we can divide by 22.5 because we have 16 (360 / 16 equals 22.5) different wind directions
-function windDirection(degrees) {
-    let direction = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"];
+function windDirection(degrees, long) {
+    let direction;
+    if (long)
+        direction = ["N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE", "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW", "N"];
+    else
+        direction = ["North", "North by North East", "North East",  "East by North East",
+                    "East",   "East by South East",  "South East", "South by South East",
+                    "South",  "South by South West", "South West",  "West by South West",
+                    "West",   "West by North West",  "North West", "North by North West", "North"];
 
     degrees = Math.round(degrees + 11.25) % 360;
     let index = Math.floor(degrees / 22.5);
