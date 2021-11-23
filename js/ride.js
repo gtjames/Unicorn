@@ -81,15 +81,15 @@ WildRydes.map = WildRydes.map || {};
     function latLonToWeather(data) {
         let wx = {};
         wx.daily = data.daily.map(d => ({
-            date:           utils.niceDate(d.dt,data.timezone_offset),
-            min:            utils.KtoF(d.temp.min),
-            max:            utils.KtoF(d.temp.max),
-            sunrise:        utils.niceTime(d.sunrise, data.timezone_offset),
-            sunset:         utils.niceTime(d.sunset, data.timezone_offset),
+            date:           niceDate(d.dt,data.timezone_offset),
+            min:            KtoF(d.temp.min),
+            max:            KtoF(d.temp.max),
+            sunrise:        niceTime(d.sunrise, data.timezone_offset),
+            sunset:         niceTime(d.sunset, data.timezone_offset),
             icon:           d.weather[0].icon,
             description:    d.weather[0].description,
             wind_speed:     d.wind_speed.toFixed(0),
-            windDirection:  utils.windDirection(d.wind_deg),
+            windDirection:  windDirection(d.wind_deg),
             pop:            (d.pop * 100).toFixed(0),
             feels_like:     KtoF(d.feels_like.day),
             dewPoint:       d.dew_point,
