@@ -1,3 +1,5 @@
+import {getLocation, KtoF, lat, locationRetrieved, lon, niceDate, niceTime, windDirection} from './utils.js';
+
 /*global WildRydes _config*/
 
 var WildRydes = window.WildRydes || {};
@@ -62,18 +64,19 @@ WildRydes.map = WildRydes.map || {};
 
                 //  If the city was entered extract weather based on that API else use the LatLon API result format
                 let wx = latLonToWeather(weather);
-
+                let innerHTML = '';
                 //  We have converted the Lon Lat API (onecall) and City API (forecast) requests to the same format
                 for (let day of wx.daily) {
                     //  let's build a nice card for each day of the weather data
                     //  this is a GREAT opportunity to Reactify this code. But for now I will keep it simple
-                    innerHTML = `<h2>Date: ${day.date}</h2>
+                    innerHTML += `<h2>Date: ${day.date}</h2>
                             <h4>Temp: Low ${day.min}&deg; / High: ${day.max}&deg;</h4>
                             <p>Forecast: <img src='http://openweathermap.org/img/wn/${day.icon}@2x.png' alt=""> ${day.description}</p>
                             <p>Chance of rain at ${day.pop}%</p>
                             <p>Wind at ${day.wind_speed} mph out of the ${day.windDirection}</p>
                             <p>Sunrise: ${day.sunrise} / Sunset: ${day.sunset}</p>`;
                 }
+                displayUpdate(innerHTML);
             });
     }
 
