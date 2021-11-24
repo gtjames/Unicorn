@@ -75,8 +75,8 @@ WildRydes.map = WildRydes.map || {};
                         <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
                 displayUpdate(innerHTML);
 
-                msg =  `${niceDate(weather.current.dt,      weather.timezone_offset)} 
-                        ${niceTime(weather.current.sunrise, weather.timezone_offset)}
+                msg =  `${niceDate(weather.current.dt, weather.timezone_offset)} 
+                        ${niceTime(weather.current.dt, weather.timezone_offset)}
                         Temp is ${KtoF(weather.current.temp)} degrees,
                         Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
                         Sunset will be at ${niceTime(weather.current.sunset)}`
