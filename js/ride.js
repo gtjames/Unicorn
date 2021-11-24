@@ -79,7 +79,7 @@ WildRydes.map = WildRydes.map || {};
                         ${niceTime(weather.current.dt, weather.timezone_offset)}
                         Temp is ${KtoF(weather.current.temp)} degrees,
                         Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
-                        Sunset will be at ${niceTime(weather.current.sunset)}`
+                        Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
                 console.log(msg);
                 let speech = new SpeechSynthesisUtterance();
                 speech.lang = "en-US";
