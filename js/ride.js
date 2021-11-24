@@ -80,7 +80,7 @@ WildRydes.map = WildRydes.map || {};
                         Temp is ${KtoF(weather.current.temp)} degrees,
                         Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
                         Sunset will be at ${niceTime(weather.current.sunset)}`
-
+                console.log(msg);
                 let speech = new SpeechSynthesisUtterance();
                 speech.lang = "en-US";
                 speech.text = msg;
