@@ -67,8 +67,8 @@ WildRydes.map = WildRydes.map || {};
                 //  We have converted the Lon Lat API (onecall) and City API (forecast) requests to the same format
                 //  let's build a nice card for each day of the weather data
                 //  this is a GREAT opportunity to Reactify this code. But for now I will keep it simple
-                innerHTML += `<h2>Date: ${wx.daily[0].date}</h2>
-                        <h4>Temp: Low ${wx.daily[0].min}&deg; / High: ${wx.daily[0].max}&deg;</h4>
+                innerHTML += `<h4>Date: ${wx.daily[0].date}</h4>
+                        <h5>Temp: Low ${wx.daily[0].min}&deg; / High: ${wx.daily[0].max}&deg;</h5>
                         <p>Forecast: <img src='http://openweathermap.org/img/wn/${wx.daily[0].icon}@2x.png' alt=""> ${wx.daily[0].description}</p>
                         <p>Chance of rain at ${wx.daily[0].pop}%</p>
                         <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
@@ -77,8 +77,8 @@ WildRydes.map = WildRydes.map || {};
 
                 msg =  `${niceDate(weather.current.dt,      weather.timezone_offset)} 
                         ${niceTime(weather.current.sunrise, weather.timezone_offset)}
-                        Temp is ${KtoF(weather.current.temp)} degrees
-                        Wind at ${weather.current.wind_speed} miles per hour out of the ${windDirection(weather.current.wind_deg, true)} 
+                        Temp is ${KtoF(weather.current.temp)} degrees,
+                        Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
                         Sunset will be at ${niceTime(weather.current.sunset)}`
 
                 let speech = new SpeechSynthesisUtterance();
@@ -100,7 +100,7 @@ WildRydes.map = WildRydes.map || {};
             icon:           d.weather[0].icon,
             description:    d.weather[0].description,
             wind_speed:     d.wind_speed.toFixed(0),
-            windDirection:  windDirection(d.wind_deg, false),
+            windDirection:  windDirection(d.wind_deg, true),
             pop:            (d.pop * 100).toFixed(0),
             feels_like:     KtoF(d.feels_like.day),
             dewPoint:       d.dew_point,
