@@ -41,11 +41,15 @@ WildRydes.map = WildRydes.map || {};
     function completeRequest(result, pickupLocation) {
         var unicorn;
         var pronoun;
-        getWeather(pickupLocation)
+
         console.log('Response received from API: ', result);
         unicorn = result.Unicorn;
         pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
         displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
+
+        //  get the local weather.
+        getWeather(pickupLocation)
+
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
             WildRydes.map.unsetLocation();
