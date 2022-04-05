@@ -19,6 +19,11 @@ const fleet = [
 		Gender: 'Male',
 	},
 	{
+		Name: 'Cosmo',
+		Color: 'Royal Blue',
+		Gender: 'Male',
+	},
+	{
 		Name: 'Shadowfax',
 		Color: 'White',
 		Gender: 'Male',
