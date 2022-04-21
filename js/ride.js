@@ -45,13 +45,13 @@ WildRydes.map = WildRydes.map || {};
         console.log('Response received from API: ', result);
         unicorn = result.Unicorn;
         pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
-        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
+        displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.', unicorn.Color);
 
         //  get the local weather.
         getWeather(pickupLocation, unicorn)
 
         animateArrival(function animateCallback() {
-            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
+            displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
             WildRydes.map.unsetLocation();
             $('#request').prop('disabled', 'disabled');
             $('#request').text('Set Pickup');
@@ -79,11 +79,14 @@ WildRydes.map = WildRydes.map || {};
                         <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
                 displayUpdate(innerHTML, unicorn.Color);
 
-                msg =  `${niceDate(weather.current.dt, weather.timezone_offset)} 
-                        ${niceTime(weather.current.dt, weather.timezone_offset)}
-                        Temp is ${KtoF(weather.current.temp)} degrees,
-                        Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
-                        Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
+                msg =  `Temp is ${KtoF(weather.current.temp)} degrees,
+                        Wind at ${weather.current.wind_speed} miles per hour, 
+                        out of the ${windDirection(weather.current.wind_deg, true)}`;
+                        // `${niceDate(weather.current.dt, weather.timezone_offset)}
+                        // ${niceTime(weather.current.dt, weather.timezone_offset)}
+                        // Temp is ${KtoF(weather.current.temp)} degrees,
+                        // Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
+                        // Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
                 console.log(msg);
                 let speech = new SpeechSynthesisUtterance();
                 speech.lang = "en-US";
