@@ -48,7 +48,7 @@ WildRydes.map = WildRydes.map || {};
         displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.');
 
         //  get the local weather.
-        getWeather(pickupLocation)
+        getWeather(pickupLocation, unicorn)
 
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
@@ -58,7 +58,7 @@ WildRydes.map = WildRydes.map || {};
         });
     }
 
-    function getWeather(loc) {
+    function getWeather(loc, unicorn) {
         let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=minutely,hourly&appid=a099a51a6362902523bbf6495a0818aa`;
         fetch(url)
             .then(response => response.json())  //  wait for the response and convert it to JSON
@@ -77,7 +77,7 @@ WildRydes.map = WildRydes.map || {};
                         <p>Chance of rain at ${wx.daily[0].pop}%</p>
                         <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
                         <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
-                displayUpdate(innerHTML);
+                displayUpdate(innerHTML, unicorn.Color);
 
                 msg =  `${niceDate(weather.current.dt, weather.timezone_offset)} 
                         ${niceTime(weather.current.dt, weather.timezone_offset)}
@@ -164,8 +164,9 @@ WildRydes.map = WildRydes.map || {};
         WildRydes.map.animate(origin, dest, callback);
     }
 
-    function displayUpdate(text) {
+    function displayUpdate(text, color='green') {
         $('#updates').append($('<li>' + text + '</li>'));
+        $('#updates').backgroundColor = color;
     }
 }(jQuery));
 
