@@ -50,8 +50,15 @@ WildRydes.map = WildRydes.map || {};
         //  get the local weather.
         getWeather(pickupLocation, unicorn)
 
+        // animateArrival(function animateCallback() {
+        //     displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
+        //     WildRydes.map.unsetLocation();
+        //     $('#request').prop('disabled', 'disabled');
+        //     $('#request').text('Set Pickup');
+        // });
+
         animateArrival(function animateCallback() {
-            displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
+            displayUpdate(unicorn.Name + ' has arrived. Giddy up!');
             WildRydes.map.unsetLocation();
             $('#request').prop('disabled', 'disabled');
             $('#request').text('Set Pickup');
