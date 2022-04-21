@@ -167,8 +167,8 @@ WildRydes.map = WildRydes.map || {};
         WildRydes.map.animate(origin, dest, callback);
     }
 
-    function displayUpdate(text, color='green') {
-        $('#updates').append(`<li style="background-color:${color};>${text}</li>`);
+    function displayUpdate(text, color='lightblue') {
+        $('#updates').append($(`<li style="background-color:${color};>${text}</li>`));
     }
 }(jQuery));
 
