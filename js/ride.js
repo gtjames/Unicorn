@@ -169,7 +169,6 @@ WildRydes.map = WildRydes.map || {};
 
     function displayUpdate(text, color='green') {
         $('#updates').append($(`<li style="background-color:${color}";>${text}</li>`));
-        document.getElementById('#updates').innerHTML(`<li style="background-color:${color}";>${text}</li>`);
     }
 }(jQuery));
 
