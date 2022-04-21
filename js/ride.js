@@ -75,7 +75,7 @@ WildRydes.map = WildRydes.map || {};
                 //  this is a GREAT opportunity to Reactify this code. But for now I will keep it simple
                 innerHTML += `<h4>Date: ${wx.daily[0].date}</h4>
                         <h5>Temp: Low ${wx.daily[0].min}&deg; / High: ${wx.daily[0].max}&deg;</h5>
-                        <p>Forecast: <img src='http://openweathermap.org/img/wn/${wx.daily[0].icon}@2x.png' alt=""> ${wx.daily[0].description}</p>
+                        <p>Forecast: <img src='https://openweathermap.org/img/wn/${wx.daily[0].icon}@2x.png' alt=""> ${wx.daily[0].description}</p>
                         <p>Chance of rain at ${wx.daily[0].pop}%</p>
                         <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
                         <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
