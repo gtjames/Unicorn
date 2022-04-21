@@ -165,8 +165,7 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function displayUpdate(text, color='green') {
-        $('#updates').append($('<li>' + text + '</li>'));
-        $('#updates').backgroundColor = color;
+        $('#updates').append($(`<li style="background-color:${color};"` + text + '</li>'));
     }
 }(jQuery));
 
