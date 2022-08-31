@@ -150,8 +150,10 @@ WildRydes.map = WildRydes.map || {};
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            let b = L.getBounds();
-            let c = L.getCenter()
+            let b = map.getBounds();
+            let c = map.getCenter()
+            console.log(b.toLocaleString())
+            console.log(c.toLocaleString())
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
 
             WildRydes.marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
