@@ -147,9 +147,7 @@ WildRydes.map = WildRydes.map || {};
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            window.pin = {longitude: loc.coords.longitude, latitude: loc.coords.latitude};
-            WildRydes.map.center.latitude = loc.coords.latitude;
-            WildRydes.map.center.longitude = loc.coords.longitude;
+            WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
 
             var marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
