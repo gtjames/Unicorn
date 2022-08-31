@@ -53,6 +53,9 @@ WildRydes.map = WildRydes.map || {};
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
             WildRydes.map.unsetLocation();
+            if (WildRydes.marker)
+                WildRydes.marker.remove();
+
             $('#request').prop('disabled', 'disabled');
             $('#request').text('Set Pickup');
         });
@@ -149,20 +152,22 @@ WildRydes.map = WildRydes.map || {};
 
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
 
-            var marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
-            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+            WildRydes.marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+            // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
-            var popup = L.popup();
-
+            // var popup = L.popup();
             map.on('click', onMapClick);
 
             function onMapClick(e) {
                 WildRydes.map.selectedPoint = {longitude: e.latlng[0], latitude: e.latlng[1]};
-                var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-                popup
-                    .setLatLng(e.latlng)
-                    .setContent("You clicked the map at " + e.latlng.toString())
-                    .openOn(map);
+                if (WildRydes.marker)
+                    WildRydes.marker.remove();
+                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {riseOnHover: true}).addTo(map);
+
+                // popup
+                //     .setLatLng(e.latlng)
+                //     .setContent("You clicked the map at " + e.latlng.toString())
+                //     .openOn(map);
             }
         }
 
