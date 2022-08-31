@@ -161,7 +161,7 @@ WildRydes.map = WildRydes.map || {};
             map.on('click', onMapClick);
 
             function onMapClick(e) {
-                WildRydes.map.selectedPoint = {longitude: e.latlng[0], latitude: e.latlng[1]};
+                WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
                 if (WildRydes.marker)
                     WildRydes.marker.remove();
                 handlePickupChanged();
