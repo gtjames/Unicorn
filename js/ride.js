@@ -162,6 +162,7 @@ WildRydes.map = WildRydes.map || {};
                 WildRydes.map.selectedPoint = {longitude: e.latlng[0], latitude: e.latlng[1]};
                 if (WildRydes.marker)
                     WildRydes.marker.remove();
+                handlePickupChanged();
                 WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {riseOnHover: true}).addTo(map);
 
                 // popup
