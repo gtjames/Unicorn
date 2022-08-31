@@ -122,6 +122,7 @@ WildRydes.map = WildRydes.map || {};
     // Register click handler for #request button
     $(function onDocReady() {
         $('#request').click(handleRequestClick);
+        document.body.addEventListener('click', handleRequestClick);
         $(WildRydes.map).on('pickupChange', handlePickupChanged);
 
         WildRydes.authToken.then(function updateAuthMessage(token) {
@@ -143,7 +144,11 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function handleRequestClick(event) {
-        var pickupLocation = WildRydes.map.selectedPoint;
+        var pickupLocation =  {};       // WildRydes.map.selectedPoint;
+        pickupLocation.latitude = 32.768799;
+        pickupLocation.longitude = -97.309341;
+
+        // var pickupLocation = WildRydes.map.selectedPoint;
         event.preventDefault();
         requestUnicorn(pickupLocation);
     }
