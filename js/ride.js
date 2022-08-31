@@ -90,7 +90,7 @@ WildRydes.map = WildRydes.map || {};
                 console.log(msg);
                 let speech = new SpeechSynthesisUtterance();
                 speech.lang = "en-US";
-                speech.text = msg;
+                speech.text = `Temp is ${KtoF(weather.current.temp)} degrees`;      //  TODO msg;
                 speech.volume = speech.rate = speech.pitch = 1;
                 window.speechSynthesis.speak(speech);
             });
@@ -122,7 +122,6 @@ WildRydes.map = WildRydes.map || {};
     // Register click handler for #request button
     $(function onDocReady() {
         $('#request').click(handleRequestClick);
-        document.body.addEventListener('click', handleRequestClick);
         $(WildRydes.map).on('pickupChange', handlePickupChanged);
 
         WildRydes.authToken.then(function updateAuthMessage(token) {
