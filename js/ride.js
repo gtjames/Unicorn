@@ -158,7 +158,7 @@ WildRydes.map = WildRydes.map || {};
 
             function onMapClick(e) {
                 WildRydes.map.selectedPoint = {longitude: e.latlng[0], latitude: e.latlng[1]};
-                var marker = L.marker([e.latlng[0], e.latlng[1]]).addTo(map);
+                var marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
                 popup
                     .setLatLng(e.latlng)
                     .setContent("You clicked the map at " + e.latlng.toString())
