@@ -113,13 +113,13 @@
 				attribution: '© OpenStreetMap'
 			}).addTo(map);
 
-			var marker = L.marker([51.5, -0.09]).addTo(map);
+			var marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
 
-			var circle = L.circle([51.508, -0.11], {
+			var circle = L.circle([loc.coords.latitude + 0.01, loc.coords.longitude + 0.02], {
 				color: 'red',
-				fillColor: '#f03',
+				fillColor: '#f08',
 				fillOpacity: 0.5,
-				radius: 500
+				radius: 100
 			}).addTo(map);
 
 			marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
