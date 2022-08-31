@@ -138,7 +138,6 @@ WildRydes.map = WildRydes.map || {};
             $('#noApiMessage').show();
         }
 
-
         window.navigator.geolocation
             .getCurrentPosition(setLocation);
 
@@ -151,10 +150,9 @@ WildRydes.map = WildRydes.map || {};
             }).addTo(map);
 
             let b = map.getBounds();
-            let c = map.getCenter()
-            console.log(b.toLocaleString())
-            console.log(c.toLocaleString())
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
+            WildRydes.map.extent = {minLat: b.northEast.lat, minLng: b.northEast.lng,
+                                    maxLat: b.southWest.lat, maxLng: b.southWest.lng};
 
             WildRydes.marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
