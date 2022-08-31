@@ -134,6 +134,47 @@ WildRydes.map = WildRydes.map || {};
         if (!_config.api.invokeUrl) {
             $('#noApiMessage').show();
         }
+
+
+        window.navigator.geolocation
+            .getCurrentPosition(setLocation);
+
+        var map;
+        function setLocation(loc) {
+            map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
+            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+
+            window.pin = {longitude: loc.coords.longitude, latitude: loc.coords.latitude};
+            var marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+
+            var circle = L.circle([loc.coords.latitude + 0.01, loc.coords.longitude + 0.02], {
+                color: 'red',
+                fillColor: '#f08',
+                fillOpacity: 0.5,
+                radius: 100
+            }).addTo(map);
+
+            marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
+            circle.bindPopup("I am a circle.");
+
+            var popup = L.popup();
+
+            map.on('click', onMapClick);
+
+            function onMapClick(e) {
+                e.latlng
+                popup
+                    .setLatLng(e.latlng)
+                    .setContent("You clicked the map at " + e.latlng.toString())
+                    .openOn(map);
+            }
+
+        }
+
+
     });
 
     function handlePickupChanged() {
@@ -144,8 +185,9 @@ WildRydes.map = WildRydes.map || {};
 
     function handleRequestClick(event) {
         var pickupLocation =  {};       // WildRydes.map.selectedPoint;
-        pickupLocation.latitude = 32.768799;
-        pickupLocation.longitude = -97.309341;
+
+        pickupLocation.latitude = window.pin.latitude;
+        pickupLocation.longitude = window.pin.longitude;
 
         // var pickupLocation = WildRydes.map.selectedPoint;
         event.preventDefault();
