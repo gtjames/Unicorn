@@ -148,30 +148,24 @@ WildRydes.map = WildRydes.map || {};
             }).addTo(map);
 
             window.pin = {longitude: loc.coords.longitude, latitude: loc.coords.latitude};
+            WildRydes.map.center.latitude = loc.coords.latitude;
+            WildRydes.map.center.longitude = loc.coords.longitude;
+
             var marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
-
-            var circle = L.circle([loc.coords.latitude + 0.01, loc.coords.longitude + 0.02], {
-                color: 'red',
-                fillColor: '#f08',
-                fillOpacity: 0.5,
-                radius: 100
-            }).addTo(map);
-
             marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
-            circle.bindPopup("I am a circle.");
 
             var popup = L.popup();
 
             map.on('click', onMapClick);
 
             function onMapClick(e) {
-                e.latlng
+                WildRydes.map.selectedPoint = {longitude: e.latlng[0], latitude: e.latlng[1]};
+                var marker = L.marker([e.latlng[0], e.latlng[1]]).addTo(map);
                 popup
                     .setLatLng(e.latlng)
                     .setContent("You clicked the map at " + e.latlng.toString())
                     .openOn(map);
             }
-
         }
 
 
@@ -184,12 +178,8 @@ WildRydes.map = WildRydes.map || {};
     }
 
     function handleRequestClick(event) {
-        var pickupLocation =  {};       // WildRydes.map.selectedPoint;
+        var pickupLocation =  WildRydes.map.selectedPoint;
 
-        pickupLocation.latitude = window.pin.latitude;
-        pickupLocation.longitude = window.pin.longitude;
-
-        // var pickupLocation = WildRydes.map.selectedPoint;
         event.preventDefault();
         requestUnicorn(pickupLocation);
     }
