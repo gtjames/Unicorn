@@ -217,6 +217,7 @@ WildRydes.map = WildRydes.map || {};
     }
     function animate(origin, dest, callback) {
         let tick = 0;
+        let id = null;
         const unicorn = WildRydes.marker;
 
         let latInc = (dest.latitude - origin.latitude) / 100;
