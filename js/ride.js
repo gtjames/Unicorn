@@ -224,7 +224,7 @@ WildRydes.map = WildRydes.map || {};
         let lngInc = (dest.longitude - origin.longitude) / 100;
 
         clearInterval(id);
-        id = setInterval(frame, 5);
+        id = setInterval(frame, 250);
         function frame() {
             if (tick == 100) {
                 clearInterval(id);
@@ -233,6 +233,7 @@ WildRydes.map = WildRydes.map || {};
                 tick++;
                 latlng = {lat: unicorn._latlng.lat +  latInc, lng: unicorn._latlng.lng +  lngInc};
                 unicorn.setLatLng(latlng);
+                console.log(latlng);
             }
         }
     }
