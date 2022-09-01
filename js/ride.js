@@ -165,7 +165,16 @@ WildRydes.map = WildRydes.map || {};
                 if (WildRydes.marker)
                     WildRydes.marker.remove();
                 handlePickupChanged();
-                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {riseOnHover: true}).addTo(map);
+
+                var myIcon = L.icon({
+                    iconUrl: 'images/unicorn-icon.png',
+                    iconSize: [25, 25],
+                    iconAnchor: [22, 24],
+                    shadowSize: [25, 25],
+                    shadowAnchor: [22, 24]
+                });
+
+                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon, riseOnHover: true}).addTo(map);
 
                 // popup
                 //     .setLatLng(e.latlng)
