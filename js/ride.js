@@ -152,7 +152,9 @@ WildRydes.map = WildRydes.map || {};
             let b = map.getBounds();
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
-                                    maxLat: b._southWest.lat, maxLng: b._southWest.lng};
+                maxLat: b._southWest.lat, maxLng: b._southWest.lng};
+            WildRydes.map.elextent = {minLat: 0, minLng: 0,
+                maxLat: WildRydes.marker._map._size.y, maxLng: WildRydes.marker._map._size.x};
 
             WildRydes.marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
@@ -216,35 +218,23 @@ WildRydes.map = WildRydes.map || {};
         animate(origin, dest, callback);
     }
     function animate(origin, dest, callback) {
-        var startTime;
-        var step = function animateFrame(timestamp) {
-            var progress;
-            var progressPct;
-            var point;
-            var deltaLat;
-            var deltaLon;
-            if (!startTime) startTime = timestamp;
-            progress = timestamp - startTime;
-            progressPct = Math.min(progress / 2000, 1);
-            deltaLat = (dest.latitude - origin.latitude) * progressPct;
-            deltaLon = (dest.longitude - origin.longitude) * progressPct;
-            point = {
-                longitude: origin.longitude + deltaLon,
-                latitude: origin.latitude + deltaLat
-            };
-            view.graphics.remove(unicornGraphic);
-            unicornGraphic = new Graphic({
-                geometry: point,
-                symbol: unicornSymbol
-            });
-            view.graphics.add(unicornGraphic);
-            if (progressPct < 1) {
-                requestAnimationFrame(step);
+        let tick = 0;
+        const unicorn = WildRydes.marker;
+
+        let latInc = (dest.latitude - origin.latitude) / 100;
+        let lngInc = (dest.longitude - origin.longitude) / 100;
+
+        clearInterval(id);
+        id = setInterval(frame, 5);
+        function frame() {
+            if (tick == 100) {
+                clearInterval(id);
             } else {
-                callback();
+                tick++;
+                latLng = {lat: marker._latlng.lat +  latInc, lng: marker._latlng.lang +  lngInc};
+                marker.setLatLng(latlng);
             }
-        };
-        requestAnimationFrame(step);
+        }
     }
     function displayUpdate(text, color='green') {
         $('#updates').prepend($(`<li style="background-color:${color}">${text}</li>`));
