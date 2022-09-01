@@ -173,8 +173,6 @@ WildRydes.map = WildRydes.map || {};
                 //     .openOn(map);
             }
         }
-
-
     });
 
     function handlePickupChanged() {
@@ -206,11 +204,41 @@ WildRydes.map = WildRydes.map || {};
             origin.longitude = WildRydes.map.extent.maxLng;
         }
 
-        WildRydes.map.animate(origin, dest, callback);
+        animate(origin, dest, callback);
     }
-
+    function animate(origin, dest, callback) {
+        var startTime;
+        var step = function animateFrame(timestamp) {
+            var progress;
+            var progressPct;
+            var point;
+            var deltaLat;
+            var deltaLon;
+            if (!startTime) startTime = timestamp;
+            progress = timestamp - startTime;
+            progressPct = Math.min(progress / 2000, 1);
+            deltaLat = (dest.latitude - origin.latitude) * progressPct;
+            deltaLon = (dest.longitude - origin.longitude) * progressPct;
+            point = {
+                longitude: origin.longitude + deltaLon,
+                latitude: origin.latitude + deltaLat
+            };
+            view.graphics.remove(unicornGraphic);
+            unicornGraphic = new Graphic({
+                geometry: point,
+                symbol: unicornSymbol
+            });
+            view.graphics.add(unicornGraphic);
+            if (progressPct < 1) {
+                requestAnimationFrame(step);
+            } else {
+                callback();
+            }
+        };
+        requestAnimationFrame(step);
+    }
     function displayUpdate(text, color='green') {
-        $('#updates').append($(`<li style="background-color:${color}";>${text}</li>`));
+        $('#updates').prepend($(`<li style="background-color:${color}">${text}</li>`));
     }
 }(jQuery));
 
