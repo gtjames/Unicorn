@@ -52,7 +52,7 @@ WildRydes.map = WildRydes.map || {};
 
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
-            WildRydes.map.unsetLocation();
+            // WildRydes.map.unsetLocation();
             if (WildRydes.marker)
                 WildRydes.marker.remove();
 
@@ -231,7 +231,7 @@ WildRydes.map = WildRydes.map || {};
                 callback();
             } else {
                 tick++;
-                latLng = {lat: marker._latlng.lat +  latInc, lng: marker._latlng.lang +  lngInc};
+                latLng = {lat: unicorn._latlng.lat +  latInc, lng: unicorn._latlng.lang +  lngInc};
                 unicorn.setLatLng(latlng);
             }
         }
