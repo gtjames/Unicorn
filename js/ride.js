@@ -154,7 +154,8 @@ WildRydes.map = WildRydes.map || {};
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
                                     maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 
-            WildRydes.marker = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+            WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+            WildRydes.unicorn = L.marker([10,10], {icon: myIcon}).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
             // var popup = L.popup();
@@ -174,8 +175,7 @@ WildRydes.map = WildRydes.map || {};
                     shadowAnchor: [22, 24]
                 });
 
-                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-                WildRydes.unicorn = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(map);
+                WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 
                 // popup
                 //     .setLatLng(e.latlng)
