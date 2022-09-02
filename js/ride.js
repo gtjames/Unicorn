@@ -222,16 +222,17 @@ WildRydes.map = WildRydes.map || {};
 
         let latInc = (dest.latitude - origin.latitude) / 100;
         let lngInc = (dest.longitude - origin.longitude) / 100;
+        let latlng = {lat: origin._latlng.lat, lng: origin._latlng.lng};
 
         clearInterval(id);
-        id = setInterval(frame, 250);
+        id = setInterval(frame, 100);
         function frame() {
             if (tick == 100) {
                 clearInterval(id);
                 callback();
             } else {
                 tick++;
-                latlng = {lat: unicorn._latlng.lat +  latInc, lng: unicorn._latlng.lng +  lngInc};
+                latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
                 unicorn.setLatLng(latlng);
                 console.log(latlng);
             }
