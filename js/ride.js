@@ -174,7 +174,8 @@ WildRydes.map = WildRydes.map || {};
                     shadowAnchor: [22, 24]
                 });
 
-                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon, riseOnHover: true}).addTo(map);
+                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(map);
+                WildRydes.unicorn = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(map);
 
                 // popup
                 //     .setLatLng(e.latlng)
@@ -218,13 +219,7 @@ WildRydes.map = WildRydes.map || {};
     function animate(origin, dest, callback) {
         let tick = 0;
         let id = null;
-        const unicorn = WildRydes.marker;
-
-
-        L.marker([dest.latitude+0.04, dest.longitude+0.04]).addTo(map);
-        L.marker([dest.latitude-0.04, dest.longitude-0.04]).addTo(map);
-        L.marker([origin.latitude+0.04, origin.longitude+0.04]).addTo(map);
-        L.marker([origin.latitude-0.04, origin.longitude-0.04]).addTo(map);
+        const unicorn = WildRydes.unicorn;
 
         let latInc = (dest.latitude - origin.latitude) / 100;
         let lngInc = (dest.longitude - origin.longitude) / 100;
