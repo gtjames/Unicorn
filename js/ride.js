@@ -154,6 +154,14 @@ WildRydes.map = WildRydes.map || {};
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
                                     maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 
+            var myIcon = L.icon({
+                iconUrl: 'images/unicorn-icon.png',
+                iconSize: [25, 25],
+                iconAnchor: [22, 24],
+                shadowSize: [25, 25],
+                shadowAnchor: [22, 24]
+            });
+
             WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             WildRydes.unicorn = L.marker([10,10], {icon: myIcon}).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
@@ -166,14 +174,6 @@ WildRydes.map = WildRydes.map || {};
                 if (WildRydes.marker)       WildRydes.marker.remove();
                 if (WildRydes.unicorn)      WildRydes.unicorn.remove();
                 handlePickupChanged();
-
-                var myIcon = L.icon({
-                    iconUrl: 'images/unicorn-icon.png',
-                    iconSize: [25, 25],
-                    iconAnchor: [22, 24],
-                    shadowSize: [25, 25],
-                    shadowAnchor: [22, 24]
-                });
 
                 WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 
