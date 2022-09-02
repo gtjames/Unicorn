@@ -162,8 +162,8 @@ WildRydes.map = WildRydes.map || {};
 
             function onMapClick(e) {
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-                if (WildRydes.marker)
-                    WildRydes.marker.remove();
+                if (WildRydes.marker)       WildRydes.marker.remove();
+                if (WildRydes.unicorn)      WildRydes.unicorn.remove();
                 handlePickupChanged();
 
                 var myIcon = L.icon({
@@ -174,7 +174,7 @@ WildRydes.map = WildRydes.map || {};
                     shadowAnchor: [22, 24]
                 });
 
-                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(map);
+                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
                 WildRydes.unicorn = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon}).addTo(map);
 
                 // popup
