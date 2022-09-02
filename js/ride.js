@@ -219,9 +219,12 @@ WildRydes.map = WildRydes.map || {};
         let id = null;
         const unicorn = WildRydes.unicorn;
 
-        let latInc = (dest.latitude - origin.latitude) / 100;
-        let lngInc = (dest.longitude - origin.longitude) / 100;
-        let latlng = {lat: origin.latitude, lng: origin.longitude};
+        let latlng = unicorn.getLatLng();
+        let latInc = (dest.latitude - latlng.lat) / 100;
+        let lngInc = (dest.longitude - latlng.lng) / 100;
+        // let latInc = (dest.latitude - origin.latitude) / 100;
+        // let lngInc = (dest.longitude - origin.longitude) / 100;
+        // let latlng = {lat: origin.latitude, lng: origin.longitude};
 
         clearInterval(id);
         id = setInterval(frame, 5);
