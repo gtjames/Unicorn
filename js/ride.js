@@ -163,7 +163,7 @@ WildRydes.map = WildRydes.map || {};
             });
 
             WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
-            WildRydes.unicorn = L.marker([10,10], {icon: myIcon}).addTo(map);
+            WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
             // WildRydes.marker.bindPopup("<b>Hello world!</b><br>I am a popup.").openPopup();
 
             // var popup = L.popup();
