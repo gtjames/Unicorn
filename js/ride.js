@@ -221,7 +221,9 @@ WildRydes.map = WildRydes.map || {};
         let latInc = (dest.latitude - origin.latitude) / 100;
         let lngInc = (dest.longitude - origin.longitude) / 100;
         let latlng = {lat: origin.latitude, lng: origin.longitude};
-        const unicorn = L.marker([latlng.lat, latlng.lng], {icon: myIcon}).addTo(WildRydes.map);
+
+        L.marker([latlng.lat, latlng.lng]).addTo(map);
+        // const unicorn = L.marker([latlng.lat, latlng.lng], {icon: myIcon}).addTo(WildRydes.map);
 
         clearInterval(id);
         id = setInterval(frame, 5);
