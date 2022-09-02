@@ -222,7 +222,7 @@ WildRydes.map = WildRydes.map || {};
 
         let latInc = (dest.latitude - origin.latitude) / 100;
         let lngInc = (dest.longitude - origin.longitude) / 100;
-        let latlng = {lat: origin._latlng.lat, lng: origin._latlng.lng};
+        let latlng = {lat: origin.latitude.lat, lng: origin.longitude.lng};
 
         clearInterval(id);
         id = setInterval(frame, 100);
