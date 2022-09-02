@@ -166,7 +166,15 @@ WildRydes.map = WildRydes.map || {};
                     WildRydes.marker.remove();
                 handlePickupChanged();
 
-                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+                var myIcon = L.icon({
+                    iconUrl: 'images/unicorn-icon.png',
+                    iconSize: [25, 25],
+                    iconAnchor: [22, 24],
+                    shadowSize: [25, 25],
+                    shadowAnchor: [22, 24]
+                });
+
+                WildRydes.marker = L.marker([e.latlng.lat, e.latlng.lng], {icon: myIcon, riseOnHover: true}).addTo(map);
 
                 // popup
                 //     .setLatLng(e.latlng)
@@ -210,20 +218,11 @@ WildRydes.map = WildRydes.map || {};
     function animate(origin, dest, callback) {
         let tick = 0;
         let id = null;
-        var myIcon = L.icon({
-            iconUrl: 'images/unicorn-icon.png',
-            iconSize: [25, 25],
-            iconAnchor: [22, 24],
-            shadowSize: [25, 25],
-            shadowAnchor: [22, 24]
-        });
+        const unicorn = WildRydes.marker;
 
         let latInc = (dest.latitude - origin.latitude) / 100;
         let lngInc = (dest.longitude - origin.longitude) / 100;
-        let latlng = {lat: origin.latitude, lng: origin.longitude};
-
-        L.marker([latlng.lat, latlng.lng]).addTo(map);
-        // const unicorn = L.marker([latlng.lat, latlng.lng], {icon: myIcon}).addTo(WildRydes.map);
+        let latlng = {lat: origin._latlng.lat, lng: origin._latlng.lng};
 
         clearInterval(id);
         id = setInterval(frame, 5);
