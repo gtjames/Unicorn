@@ -125,7 +125,6 @@ WildRydes.map = WildRydes.map || {};
     // Register click handler for #request button
     $(function onDocReady() {
         $('#request').click(handleRequestClick);
-        $(WildRydes.map).on('pickupChange', handlePickupChanged);
 
         WildRydes.authToken.then(function updateAuthMessage(token) {
             if (token) {
@@ -149,8 +148,10 @@ WildRydes.map = WildRydes.map || {};
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            let b = map.getBounds();
+            WildRydes.map.flyTo({lat: loc.coords.latitude, lng: loc.coords.longitude}, 12);
+
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
+            let b = map.getBounds();        //  TODO moved
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
                                     maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 
@@ -168,7 +169,7 @@ WildRydes.map = WildRydes.map || {};
             // var popup = L.popup();
             map.on('click', onMapClick);
 
-            function onMapClick(e) {
+            function onMapClick(e) {            //  TODO move to esri.js
                 WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
                 if (WildRydes.marker)       WildRydes.marker.remove();
                 handlePickupChanged();
@@ -214,7 +215,7 @@ WildRydes.map = WildRydes.map || {};
 
         animate(origin, dest, callback);
     }
-    function animate(origin, dest, callback) {
+    function animate(origin, dest, callback) {          //  TODO moved
         let tick = 0;
         let id = null;
         const unicorn = WildRydes.unicorn;
