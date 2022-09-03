@@ -140,6 +140,9 @@ WildRydes.map = WildRydes.map || {};
         window.navigator.geolocation
             .getCurrentPosition(setLocation);
 
+        //  put the map behind the updates list
+        document.getElementById("map").style.zIndex = "10";
+
         var map;
         function setLocation(loc) {
             map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
