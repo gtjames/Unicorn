@@ -7,12 +7,6 @@ WildRydes.map = WildRydes.map || {};
 (function esriMapScopeWrapper($) {
 	var wrMap = WildRydes.map;
 
-	var map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
-	L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		maxZoom: 19,
-		attribution: '© OpenStreetMap'
-	}).addTo(map);
-
 	function updateCenter(newValue) {
 		wrMap.center = {latitude: newValue.coords.latitude, longitude: newValue.coords.longitude};
 	}

@@ -148,8 +148,6 @@ WildRydes.map = WildRydes.map || {};
                 attribution: '© OpenStreetMap'
             }).addTo(map);
 
-            WildRydes.map.flyTo({lat: loc.coords.latitude, lng: loc.coords.longitude}, 12);
-
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
             let b = map.getBounds();        //  TODO moved
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
@@ -175,6 +173,8 @@ WildRydes.map = WildRydes.map || {};
                 handlePickupChanged();
 
                 WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+
+                WildRydes.map.flyTo({lat: e.latlng.lat, lng: e.latlng.lng}, 12);
 
                 // popup
                 //     .setLatLng(e.latlng)
