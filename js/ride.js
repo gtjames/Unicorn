@@ -174,8 +174,6 @@ WildRydes.map = WildRydes.map || {};
 
                 WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 
-                WildRydes.map.flyTo({lat: e.latlng.lat, lng: e.latlng.lng}, 12);
-
                 // popup
                 //     .setLatLng(e.latlng)
                 //     .setContent("You clicked the map at " + e.latlng.toString())
@@ -237,6 +235,8 @@ WildRydes.map = WildRydes.map || {};
                 tick++;
                 latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
                 unicorn.setLatLng(latlng);
+                WildRydes.map.flyTo(latlng, 3);
+
                 console.log(latlng);
             }
         }
