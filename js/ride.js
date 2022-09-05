@@ -238,7 +238,8 @@ WildRydes.map = WildRydes.map || {};
                 tick++;
                 latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
                 unicorn.setLatLng(latlng);
-                map.flyTo(latlng, 3);
+
+                WildRydes.map.flyTo(latlng, 3);
             }
         }
     }
