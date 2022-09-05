@@ -216,10 +216,19 @@ WildRydes.map = WildRydes.map || {};
 
         animate(origin, dest, callback);
     }
+
+    let count = 0;
     function animate(origin, dest, callback) {          //  TODO moved
         let tick = 0;
         let id = null;
         const unicorn = WildRydes.unicorn;
+
+        count++;
+        unicorn.setIcon({
+            iconUrl: (count % 2 === 0) ? 'images/unicorn-icon.png' : 'images/unicorn-icon2.png',
+            iconSize: [38, 95],
+            iconAnchor: [22, 94],
+        })
 
         let latlng = unicorn.getLatLng();
         let latInc = (dest.latitude - latlng.lat) / 100;
@@ -238,8 +247,6 @@ WildRydes.map = WildRydes.map || {};
                 tick++;
                 latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
                 unicorn.setLatLng(latlng);
-
-                WildRydes.map.flyTo(latlng, 3);
             }
         }
     }
