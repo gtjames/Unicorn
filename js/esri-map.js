@@ -1,4 +1,3 @@
-
 /*global WildRydes _config*/
 
 var WildRydes = window.WildRydes || {};
@@ -16,15 +15,6 @@ WildRydes.map = WildRydes.map || {};
 		wrMap.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
 			maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 	}
-
-	map.on('click', (e) => {			//	TODO moved
-		wrMap.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-		if (WildRydes.marker)       WildRydes.marker.remove();
-		handlePickupChanged();
-
-		WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-		// $(wrMap).trigger('pickupChange');
-	});
 
 	wrMap.animate = function animate(origin, dest, callback) {          //  TODO moved
 		let tick = 0;

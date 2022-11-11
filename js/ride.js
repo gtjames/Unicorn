@@ -2,6 +2,7 @@
 
 var WildRydes = window.WildRydes || {};
 WildRydes.map = WildRydes.map || {};
+let map;
 
 (function rideScopeWrapper($) {
     var authToken;
@@ -61,67 +62,6 @@ WildRydes.map = WildRydes.map || {};
         });
     }
 
-    function getWeather(loc, unicorn) {
-        let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=minutely,hourly&appid=a099a51a6362902523bbf6495a0818aa`;
-        fetch(url)
-            .then(response => response.json())  //  wait for the response and convert it to JSON
-            .then(weather => {                  //  with the resulting JSON data do something
-
-                //  If the city was entered extract weather based on that API else use the LatLon API result format
-                let wx = latLonToWeather(weather);
-                let innerHTML = '';
-                let msg;
-                //  We have converted the Lon Lat API (onecall) and City API (forecast) requests to the same format
-                //  let's build a nice card for each day of the weather data
-                //  this is a GREAT opportunity to Reactify this code. But for now I will keep it simple
-                innerHTML += `<h4>Date: ${wx.daily[0].date}</h4>
-                        <h5>Temp: Low ${wx.daily[0].min}&deg; / High: ${wx.daily[0].max}&deg;</h5>
-                        <p>Forecast: <img src='https://openweathermap.org/img/wn/${wx.daily[0].icon}@2x.png' alt=""> ${wx.daily[0].description}</p>
-                        <p>Chance of rain at ${wx.daily[0].pop}%</p>
-                        <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
-                        <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
-                displayUpdate(innerHTML, unicorn.Color);
-
-                msg =  `Temp is ${KtoF(weather.current.temp)} degrees,
-                        Wind at ${weather.current.wind_speed} miles per hour, 
-                        out of the ${windDirection(weather.current.wind_deg, true)}`;
-                        // `${niceDate(weather.current.dt, weather.timezone_offset)}
-                        // ${niceTime(weather.current.dt, weather.timezone_offset)}
-                        // Temp is ${KtoF(weather.current.temp)} degrees,
-                        // Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
-                        // Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
-                console.log(msg);
-                let speech = new SpeechSynthesisUtterance();
-                speech.lang = "en-US";
-                speech.text = `Temp is ${KtoF(weather.current.temp)} degrees`;      //  TODO msg;
-                speech.volume = speech.rate = speech.pitch = 1;
-                window.speechSynthesis.speak(speech);
-            });
-    }
-
-    function latLonToWeather(data) {
-        let wx = {};
-        wx.daily = data.daily.map(d => ({
-            date:           niceDate(d.dt,data.timezone_offset),
-            min:            KtoF(d.temp.min),
-            max:            KtoF(d.temp.max),
-            sunrise:        niceTime(d.sunrise, data.timezone_offset),
-            sunset:         niceTime(d.sunset,  data.timezone_offset),
-            icon:           d.weather[0].icon,
-            description:    d.weather[0].description,
-            wind_speed:     d.wind_speed.toFixed(0),
-            windDirection:  windDirection(d.wind_deg, true),
-            pop:            (d.pop * 100).toFixed(0),
-            feels_like:     KtoF(d.feels_like.day),
-            dewPoint:       d.dew_point,
-            humidity:       d.humidity,
-        }));
-        wx.city = "";
-        wx.lat  = data.lat;
-        wx.lon  = data.lon;
-        return wx;
-    }
-
     // Register click handler for #request button
     $(function onDocReady() {
         $('#request').click(handleRequestClick);
@@ -143,7 +83,6 @@ WildRydes.map = WildRydes.map || {};
         //  put the map behind the updates list
         document.getElementById("map").style.zIndex = "10";
 
-        var map;
         function setLocation(loc) {
             map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -214,37 +153,39 @@ WildRydes.map = WildRydes.map || {};
             origin.longitude = WildRydes.map.extent.maxLng;
         }
 
-        animate(origin, dest, callback);
+        WildRydes.map.animate(origin, dest, callback);
+        // animate(origin, dest, callback);
     }
-
-    function animate(origin, dest, callback) {          //  TODO moved
-        let tick = 0;
-        let id = null;
-        const unicorn = WildRydes.unicorn;
-
-        let latlng = unicorn.getLatLng();
-        let latInc = (dest.latitude - latlng.lat) / 100;
-        let lngInc = (dest.longitude - latlng.lng) / 100;
-        // let latInc = (dest.latitude - origin.latitude) / 100;
-        // let lngInc = (dest.longitude - origin.longitude) / 100;
-        // let latlng = {lat: origin.latitude, lng: origin.longitude};
-
-        clearInterval(id);
-        id = setInterval(frame, 5);
-        function frame() {
-            if (tick === 100) {
-                clearInterval(id);
-                callback();
-            } else {
-                tick++;
-                latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
-                unicorn.setLatLng(latlng);
-            }
-        }
-    }
+    //
+    // function animate(origin, dest, callback) {          //  TODO moved
+    //     let tick = 0;
+    //     let id = null;
+    //     const unicorn = WildRydes.unicorn;
+    //
+    //     let latlng = unicorn.getLatLng();
+    //     let latInc = (dest.latitude - latlng.lat) / 100;
+    //     let lngInc = (dest.longitude - latlng.lng) / 100;
+    //     // let latInc = (dest.latitude - origin.latitude) / 100;
+    //     // let lngInc = (dest.longitude - origin.longitude) / 100;
+    //     // let latlng = {lat: origin.latitude, lng: origin.longitude};
+    //
+    //     clearInterval(id);
+    //     id = setInterval(frame, 5);
+    //     function frame() {
+    //         if (tick === 100) {
+    //             clearInterval(id);
+    //             callback();
+    //         } else {
+    //             tick++;
+    //             latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
+    //             unicorn.setLatLng(latlng);
+    //         }
+    //     }
+    // }
     function displayUpdate(text, color='green') {
         $('#updates').prepend($(`<li style="background-color:${color}">${text}</li>`));
     }
+
 }(jQuery));
 
 let message;
@@ -269,6 +210,67 @@ function windDirection(degrees, long) {
     let index = Math.floor(degrees / 22.5);
     return direction[index];
 }
+function getWeather(loc, unicorn) {
+    let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=minutely,hourly&appid=a099a51a6362902523bbf6495a0818aa`;
+    fetch(url)
+        .then(response => response.json())  //  wait for the response and convert it to JSON
+        .then(weather => {                  //  with the resulting JSON data do something
+
+            //  If the city was entered extract weather based on that API else use the LatLon API result format
+            let wx = latLonToWeather(weather);
+            let innerHTML = '';
+            let msg;
+            //  We have converted the Lon Lat API (onecall) and City API (forecast) requests to the same format
+            //  let's build a nice card for each day of the weather data
+            //  this is a GREAT opportunity to Reactify this code. But for now I will keep it simple
+            innerHTML += `<h4>Date: ${wx.daily[0].date}</h4>
+                        <h5>Temp: Low ${wx.daily[0].min}&deg; / High: ${wx.daily[0].max}&deg;</h5>
+                        <p>Forecast: <img src='https://openweathermap.org/img/wn/${wx.daily[0].icon}@2x.png' alt=""> ${wx.daily[0].description}</p>
+                        <p>Chance of rain at ${wx.daily[0].pop}%</p>
+                        <p>Wind at ${wx.daily[0].wind_speed} mph out of the ${wx.daily[0].windDirection}</p>
+                        <p>Sunrise: ${wx.daily[0].sunrise} / Sunset: ${wx.daily[0].sunset}</p>`;
+            displayUpdate(innerHTML, unicorn.Color);
+
+            msg =  `Temp is ${KtoF(weather.current.temp)} degrees,
+                        Wind at ${weather.current.wind_speed} miles per hour, 
+                        out of the ${windDirection(weather.current.wind_deg, true)}`;
+            // `${niceDate(weather.current.dt, weather.timezone_offset)}
+            // ${niceTime(weather.current.dt, weather.timezone_offset)}
+            // Temp is ${KtoF(weather.current.temp)} degrees,
+            // Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
+            // Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
+            console.log(msg);
+            let speech = new SpeechSynthesisUtterance();
+            speech.lang = "en-US";
+            speech.text = `Temp is ${KtoF(weather.current.temp)} degrees`;      //  TODO msg;
+            speech.volume = speech.rate = speech.pitch = 1;
+            window.speechSynthesis.speak(speech);
+        });
+}
+
+function latLonToWeather(data) {
+    let wx = {};
+    wx.daily = data.daily.map(d => ({
+        date:           niceDate(d.dt,data.timezone_offset),
+        min:            KtoF(d.temp.min),
+        max:            KtoF(d.temp.max),
+        sunrise:        niceTime(d.sunrise, data.timezone_offset),
+        sunset:         niceTime(d.sunset,  data.timezone_offset),
+        icon:           d.weather[0].icon,
+        description:    d.weather[0].description,
+        wind_speed:     d.wind_speed.toFixed(0),
+        windDirection:  windDirection(d.wind_deg, true),
+        pop:            (d.pop * 100).toFixed(0),
+        feels_like:     KtoF(d.feels_like.day),
+        dewPoint:       d.dew_point,
+        humidity:       d.humidity,
+    }));
+    wx.city = "";
+    wx.lat  = data.lat;
+    wx.lon  = data.lon;
+    return wx;
+}
+
 
 //  strip out just the MM/DD/YYY from the date
 //  convert from UNIX date time and take the time zone offset into consideration
