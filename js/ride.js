@@ -16,6 +16,9 @@ let map;
         alert(error);
         window.location.href = '/signin.html';
     });
+
+    //  requestUnicorn
+    //      make the POST request to the server
     function requestUnicorn(pickupLocation) {
         $.ajax({
             method: 'POST',
@@ -39,6 +42,8 @@ let map;
         });
     }
 
+    //  completeRequest
+    //      a Unicorn has been dispatched to your location
     function completeRequest(result, pickupLocation) {
         var unicorn;
         var pronoun;
@@ -48,14 +53,13 @@ let map;
         pronoun = unicorn.Gender === 'Male' ? 'his' : 'her';
         displayUpdate(unicorn.Name + ', your ' + unicorn.Color + ' unicorn, is on ' + pronoun + ' way.', unicorn.Color);
 
+        console.log(pickupLocation);
         //  get the local weather.
         getWeather(pickupLocation, unicorn)
 
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
-            // WildRydes.map.unsetLocation();
-            if (WildRydes.marker)
-                WildRydes.marker.remove();
+            WildRydes.map.unsetLocation();
 
             $('#request').prop('disabled', 'disabled');
             $('#request').text('Set Pickup');
@@ -93,7 +97,7 @@ let map;
             WildRydes.map.center = {latitude: loc.coords.latitude, longitude: loc.coords.longitude};
             let b = map.getBounds();        //  TODO moved
             WildRydes.map.extent = {minLat: b._northEast.lat, minLng: b._northEast.lng,
-                                    maxLat: b._southWest.lat, maxLng: b._southWest.lng};
+                maxLat: b._southWest.lat, maxLng: b._southWest.lng};
 
             WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
             var myIcon = L.icon({
@@ -124,12 +128,16 @@ let map;
         }
     });
 
+    //  handlePickupChanged
+    //      enable the Pickup button and set text to Request Unicorn
     function handlePickupChanged() {
         var requestButton = $('#request');
         requestButton.text('Request Unicorn');
         requestButton.prop('disabled', false);
     }
 
+    //  handleRequestClick
+    //      get current request location and POST request to server
     function handleRequestClick(event) {
         var pickupLocation =  WildRydes.map.selectedPoint;
 
@@ -137,6 +145,8 @@ let map;
         requestUnicorn(pickupLocation);
     }
 
+    //  animateArrival
+    //      animate the Unicorn's arrival to the user's pickup location
     function animateArrival(callback) {
         var dest = WildRydes.map.selectedPoint;
         var origin = {};
@@ -154,41 +164,20 @@ let map;
         }
 
         WildRydes.map.animate(origin, dest, callback);
-        // animate(origin, dest, callback);
     }
-    //
-    // function animate(origin, dest, callback) {          //  TODO moved
-    //     let tick = 0;
-    //     let id = null;
-    //     const unicorn = WildRydes.unicorn;
-    //
-    //     let latlng = unicorn.getLatLng();
-    //     let latInc = (dest.latitude - latlng.lat) / 100;
-    //     let lngInc = (dest.longitude - latlng.lng) / 100;
-    //     // let latInc = (dest.latitude - origin.latitude) / 100;
-    //     // let lngInc = (dest.longitude - origin.longitude) / 100;
-    //     // let latlng = {lat: origin.latitude, lng: origin.longitude};
-    //
-    //     clearInterval(id);
-    //     id = setInterval(frame, 5);
-    //     function frame() {
-    //         if (tick === 100) {
-    //             clearInterval(id);
-    //             callback();
-    //         } else {
-    //             tick++;
-    //             latlng = {lat: latlng.lat +  latInc, lng: latlng.lng +  lngInc};
-    //             unicorn.setLatLng(latlng);
-    //         }
-    //     }
-    // }
-    function displayUpdate(text, color='green') {
-        $('#updates').prepend($(`<li style="background-color:${color}">${text}</li>`));
-    }
+
 
 }(jQuery));
 
-let message;
+//  these functions below here are my utility functions
+//      to present messages to users
+//      and to particularly add some 'sizzle' to the application
+
+//  displayUpdate
+//      nice utility method to show message to user
+function displayUpdate(text, color='green') {
+    $('#updates').prepend($(`<li style="background-color:${color}">${text}</li>`));
+}
 
 //  convert degrees into english directions
 //  North is 11.25 degrees on both sides of 0/360 degrees.
@@ -210,6 +199,7 @@ function windDirection(degrees, long) {
     let index = Math.floor(degrees / 22.5);
     return direction[index];
 }
+
 function getWeather(loc, unicorn) {
     let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=minutely,hourly&appid=a099a51a6362902523bbf6495a0818aa`;
     fetch(url)
@@ -270,7 +260,6 @@ function latLonToWeather(data) {
     wx.lon  = data.lon;
     return wx;
 }
-
 
 //  strip out just the MM/DD/YYY from the date
 //  convert from UNIX date time and take the time zone offset into consideration
