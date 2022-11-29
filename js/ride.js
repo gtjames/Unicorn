@@ -55,8 +55,11 @@ let map;
 
         console.log(pickupLocation);
         //  get the local weather.
-        getWeather(pickupLocation, unicorn)
-
+        let searchText = document.getElementById('search').value;
+        if (searchText.length === 0)
+            getWeather(pickupLocation, unicorn)
+        else
+            bookSearch(searchText);
         animateArrival(function animateCallback() {
             displayUpdate(unicorn.Name + ' has arrived. Giddy up!', unicorn.Color);
             WildRydes.map.unsetLocation();
@@ -200,6 +203,24 @@ function windDirection(degrees, long) {
     return direction[index];
 }
 
+function bookSearch(searchText) {
+    fetch(`https://www.googleapis.com/books/v1/volumes?q=${searchText}`)
+        .then(resp => resp.json())          //  wait for the response and convert it to JSON
+        .then(books => showBooks(books));
+}
+
+function showBooks(books) {
+    let b = books.items[0];
+    let msg =
+        `<img src=${b.volumeInfo.imageLinks.smallThumbnail} height='120px' alt=""><br>
+        You might enjoy <a href="${b.saleInfo.buyLink}">${b.volumeInfo.title}</a> 
+        written by ${b.volumeInfo.authors[0]}<br> 
+        ${b.volumeInfo.pageCount} pages. Purchase for ${b.saleInfo.listPrice.amount}<br> 
+        ${b.volumeInfo.description.substring(0,200)}`;
+    displayUpdate(msg, 'yellow');
+    speak(`You might enjoy ${b.volumeInfo.title} written by ${b.volumeInfo.authors[0]}`)
+}
+
 function getWeather(loc, unicorn) {
     let url = `https://api.openweathermap.org/data/2.5/onecall?lat=${loc.latitude}&lon=${loc.longitude}&exclude=minutely,hourly&appid=a099a51a6362902523bbf6495a0818aa`;
     fetch(url)
@@ -230,12 +251,16 @@ function getWeather(loc, unicorn) {
             // Wind at ${weather.current.wind_speed} miles per hour, out of the ${windDirection(weather.current.wind_deg, true)} ,
             // Sunset will be at ${niceTime(weather.current.sunset, weather.timezone_offset)}`
             console.log(msg);
-            let speech = new SpeechSynthesisUtterance();
-            speech.lang = "en-US";
-            speech.text = `Temp is ${KtoF(weather.current.temp)} degrees`;      //  TODO msg;
-            speech.volume = speech.rate = speech.pitch = 1;
-            window.speechSynthesis.speak(speech);
+            speak(`Temp is ${KtoF(weather.current.temp)} degrees`);
         });
+}
+
+function speak(msg) {
+    let speech = new SpeechSynthesisUtterance();
+    speech.lang = "en-US";
+    speech.text = msg;      //  TODO msg;
+    speech.volume = speech.rate = speech.pitch = 1;
+    window.speechSynthesis.speak(speech);
 }
 
 function latLonToWeather(data) {
