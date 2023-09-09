@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Arlington TX YSA</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+          integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+          crossorigin=""/>
+    <link rel="stylesheet" href="/css/ward.css">
+</head>
+
+<body>
+    <div class="info panel panel-default">
+        <div class="panel-heading">
+            <button id="request" class="btn btn-primary">Adrs to GPS</button>
+            <div id="count"></div>
+            <button id="plot"    class="btn btn-primary">Plot Addresses</button>
+            <div class="dropdown pull-right">
+                <button id="accountLink" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" aria-labelledby="accountLink">
+                    <li><a id="remove" href="#">Remove</a></li>
+                    <li><input type="checkbox" id="list"   ><label for="list">Show Names</label></li>
+                    <li><input type="checkbox" id="All"    ><label for="All">Everybody</label></li>
+                    <li><input type="checkbox" id="EQ"     ><label for="EQ">Elders</label></li>
+                    <li><input type="checkbox" id="RS"     ><label for="RS">Relief Society</label></li>
+                    <li><input type="checkbox" id="Active" ><label for="Active">Active</label></li>
+                    <li><input type="checkbox" id="New"    ><label for="New">New to Ward</label></li>
+                    <li><input type="checkbox" id="Ride"   ><label for="Ride">Needs Ride</label></li>
+                    <li><input type="checkbox" id="Drive"  ><label for="Drive">Driver</label></li>
+                    <li><input type="checkbox" id="Endowed"><label for="Endowed">Endowed</label><input type="checkbox" id="NotEndowed"></li>
+                    <li><input type="checkbox" id="Convert"><label for="Convert">Convert</label></li>
+                    <li><input type="checkbox" id="RM"     ><label for="RM">RM</label></li>
+                    <li><input type="checkbox" id="Sealed" ><label for="Sealed">Sealed</label></li>
+                    <li><input type="checkbox" id="Bro"    ><label for="Bro">Ministering Bro</label><input type="checkbox" id="NotBro"></li>
+                    <li><input type="checkbox" id="Sis"    ><label for="Sis">Ministering Sis</label><input type="checkbox" id="NotSis"></li>
+                </ul>
+            </div>
+            <div class="dropdown pull-right">
+                    <button id="accountLink" class="btn" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="accountLink">
+                    <li><div class="form-group"><input type="text" placeholder="Name"   id="Name"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="Street" id="Street"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="Zip"    id="Zip"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="City"   id="City"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="Age"    id="Age"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="Priesthood" id="Priesthood"></div></li>
+                    <li><div class="form-group"><input type="text" placeholder="Recommend"  id="Recommend"></div></li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel-body"><ol id="updates"></ol></div>
+    </div>
+
+    <div id="main">
+        <div id="map">
+        </div>
+    </div>
+
+    <script src="js/vendor/jquery-3.1.0.js"></script>
+    <script src="js/vendor/bootstrap.min.js"></script>
+    <script src="js/ward.js"></script>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+            integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+            crossorigin=""></script>
+</body>
+
+</html>

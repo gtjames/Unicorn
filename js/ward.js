@@ -1,51 +1,64 @@
-/*global WildRydes _config*/
-
-var WildRydes = window.WildRydes || {};
-WildRydes.map = WildRydes.map || {};
+var wardMap = {};
 let map;
-let currentLocation = {};
 
-(function rideScopeWrapper($) {
+let cbAll    = document.querySelector("#All");
+let cbEQ     = document.querySelector("#EQ");
+let cbRS     = document.querySelector("#RS");
+let cbActive = document.querySelector("#Active");
+let cbNew    = document.querySelector("#New");
+let cbRide   = document.querySelector("#Ride");
+let cbDrive  = document.querySelector("#Drive");
+let cbConvert= document.querySelector("#Convert");
+let cbEndowed= document.querySelector("#Endowed");
+let cbNotEndowed= document.querySelector("#NotEndowed");
+let cbRM     = document.querySelector("#RM");
+let cbSealed = document.querySelector("#Sealed");
+let cbBro    = document.querySelector("#Bro");
+let cbSis    = document.querySelector("#Sis");
+let cbNotBro = document.querySelector("#NotBro");
+let cbNotSis = document.querySelector("#NotSis");
 
-    // Register click handler for #request button
-    $(function onDocReady() {
-        $('#request').click(handleRequestClick);
-        $('#plot').click(handelPlotRequest);
-        $('#remove').click(handleRemoveRequest);
+let txtName  = document.querySelector("#Name");
+let txtStreet= document.querySelector("#Street");
+let txtZip   = document.querySelector("#Zip");
+let txtCity  = document.querySelector("#City");
+let txtAge   = document.querySelector("#Age");
+let txtPrsthd= document.querySelector("#Priesthood");
+let txtRec   = document.querySelector("#Recommend");
 
-        window.navigator.geolocation.getCurrentPosition(setLocation);
+document.getElementById('request').addEventListener('click', handleRequestClick);
+document.getElementById('plot'   ).addEventListener('click', handelPlotRequest);
+document.getElementById('remove' ).addEventListener('click', handleRemoveRequest);
 
-        //  put the map behind the updates list
-        document.getElementById("map").style.zIndex = "10";
+window.navigator.geolocation.getCurrentPosition(setLocation);
 
-        function setLocation(loc) {
-            currentLocation = loc;
-            map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
-            L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                maxZoom: 19,
-                attribution: '© OpenStreetMap'
-            }).addTo(map);
+//  put the map behind the updates list
+document.getElementById("map").style.zIndex = "10";
 
-            WildRydes.map.center = {longitude: loc.coords.longitude, latitude: loc.coords.latitude};
-            let b = map.getBounds();        //  TODO moved
-            WildRydes.map.extent = {minLng: b._northEast.lng, minLat: b._northEast.lat, 
-                maxLng: b._southWest.lng, maxLat: b._southWest.lat};
+function setLocation(loc) {
+    map = L.map('map').setView([loc.coords.latitude, loc.coords.longitude], 13);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution: '© OpenStreetMap'
+    }).addTo(map);
 
-            WildRydes.marker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
-            var myIcon = L.icon({
-                iconUrl: 'images/unicorn-icon.png',
-                iconSize: [25, 25],
-                iconAnchor: [22, 24],
-                shadowSize: [25, 25],
-                shadowAnchor: [22, 24]
-            });
-            WildRydes.unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
+    wardMap.center = {longitude: loc.coords.longitude, latitude: loc.coords.latitude};
+    let b = map.getBounds();
+    wardMap.extent = {  minLng: b._northEast.lng, minLat: b._northEast.lat, 
+                        maxLng: b._southWest.lng, maxLat: b._southWest.lat };
 
-            map.on('click', onMapClick);
-        }
+    clickMarker  = L.marker([loc.coords.latitude, loc.coords.longitude]).addTo(map);
+    var myIcon = L.icon({
+        iconUrl: 'images/unicorn-icon.png',
+        iconSize: [25, 25],
+        iconAnchor: [22, 24],
+        shadowSize: [25, 25],
+        shadowAnchor: [22, 24]
     });
+    unicorn = L.marker([loc.coords.latitude, loc.coords.longitude], {icon: myIcon}).addTo(map);
 
-}(jQuery));
+    map.on('click', onMapClick);
+}
 
 // var LeafIcon = L.Icon.extend({
 //     options: {
@@ -64,15 +77,14 @@ let currentLocation = {};
 
 
 function onMapClick(e) {            //  TODO move to esri.js
-    WildRydes.map.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
-    if (WildRydes.marker)       WildRydes.marker.remove();
-    WildRydes.marker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+    wardMap.selectedPoint = {longitude: e.latlng.lng, latitude: e.latlng.lat};
+    if (clickMarker)       clickMarker.remove();
+    clickMarker  = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 }
 
     //  handleRequestClick
     //      get current request location and POST request to server
     function handleRequestClick(event) {
-        // var pickupLocation =  WildRydes.map.selectedPoint;
         event.preventDefault();
         everybody.forEach(e => getLongLat(e.address1+', '+e.city +' '+e.state))
     }
@@ -88,35 +100,33 @@ function onMapClick(e) {            //  TODO move to esri.js
         };
         fetch(url, options)
             .then(resp => resp.json())          //  wait for the response and convert it to JSON
-            .then(address => showAddresses(adrs, address.results));
+            .then(address => {
+                console.log(adrs + ' ' + address[0].geometry.location.lat + ' ' + address[0].geometry.location.lng);
+                addresses.push(address[0].geometry.location);
+                L.marker([address[0].geometry.location.lat, address[0].geometry.location.lng]).addTo(map);        
+            });
     }    
     
-    function showAddresses(adrs, address) {
-        console.log(adrs + ' ' + address[0].geometry.location.lat + ' ' + address[0].geometry.location.lng);
-        addresses.push(address[0].geometry.location);
-        WildRydes.marker  = L.marker([address[0].geometry.location.lat, address[0].geometry.location.lng]).addTo(map);
-    }
-
     //  plot Addresses
     //      get current request location and POST request to server
     function handelPlotRequest(event) {
         event.preventDefault();
         let results = [];
-        let cbEQ     = document.querySelector("#EQ");
-        let cbRS     = document.querySelector("#RS");
-        let cbActive = document.querySelector("#Active");
-        let cbNew    = document.querySelector("#New");
-        let cbRide   = document.querySelector("#Ride");
-        let cbDrive  = document.querySelector("#Drive");
-        let txtName  = document.querySelector("#Name");
-        let txtStreet= document.querySelector("#Street");
-        let txtZip   = document.querySelector("#Zip");
-        let txtCity  = document.querySelector("#City");
-        let txtAge   = document.querySelector("#Age");
+
+        if (cbAll.checked)      results = everybody;
         if (cbEQ.checked)       results = merge(results, everybody.filter(r => r.gender === 'M'));
         if (cbRS.checked)       results = merge(results, everybody.filter(r => r.gender === 'F'));
         if (cbActive.checked)   results = merge(results, everybody.filter(r => r.Status === 'Active'));
-        if (cbEQ.convert)       results = merge(results, everybody.filter(r => r.convert));
+        if (cbEndowed.checked)  results = merge(results, everybody.filter(r => r.endowed === "Yes"));
+        if (cbNotEndowed.checked)results= merge(results, everybody.filter(r => r.endowed === "No"));
+        if (cbConvert.checked)  results = merge(results, everybody.filter(r => r.convert === "Yes"));
+        if (cbRM.checked)       results = merge(results, everybody.filter(r => r.RM      === "Yes"));
+        if (cbSealed.checked)   results = merge(results, everybody.filter(r => r.sealed  === "Yes"));
+        if (cbBro.checked)      results = merge(results, everybody.filter(r => r.minBrothers === "Yes"));
+        if (cbSis.checked)      results = merge(results, everybody.filter(r => r.minSisters  === "Yes"));
+        if (cbNotBro.checked)   results = merge(results, everybody.filter(r => r.minBrothers === "No"));
+        if (cbNotSis.checked)   results = merge(results, everybody.filter(r => r.minSisters  === "No"));
+        
         // if (cbNew.checked)
         // if (cbRide.checked)
         // if (cbDrive.checked)
@@ -124,15 +134,25 @@ function onMapClick(e) {            //  TODO move to esri.js
         if (txtStreet.value.length >0 ) results = merge(results, everybody.filter(r => r.address1.toLowerCase().indexOf(txtStreet.value.toLowerCase()) >= 0));
         if (txtZip.value.length    >0 ) results = merge(results, everybody.filter(r => r.zip.indexOf(txtZip.value) >= 0));
         if (txtCity.value.length   >0 ) results = merge(results, everybody.filter(r => r.city.toLowerCase().indexOf(txtCity.value.toLowerCase()) >= 0));
-        if (txtAge.value.length    >0 ) results = merge(results, everybody.filter(r => r.age.indexOf(txtAge.value) >= 0));
-        // if (cbEQ.Status
-        // if (cbEQ.endowed
-        // if (cbEQ.RM
-
-
-
+        if (txtPrsthd.value.length >0 ) results = merge(results, everybody.filter(r => r.priesthood.toLowerCase().indexOf(txtPrsthd.value.toLowerCase()) >= 0));
+        if (txtRec.value.length    >0 ) results = merge(results, everybody.filter(r => r.recStatus.toLowerCase().indexOf(txtRec.value.toLowerCase()) >= 0));
+        
+        if (txtAge.value.length    >0 ) {
+            let age = txtAge.value;
+            let number   = +age.substring(   age.search(/\d/));
+            let operator =  age.substring(0, age.search(/\d/));
+            switch (operator) {
+                case    "<"   : results = merge(results, everybody.filter(r => +r.age <  number));  break;
+                case    "<="  : results = merge(results, everybody.filter(r => +r.age <= number));  break;
+                case    "="   : results = merge(results, everybody.filter(r => +r.age == number));  break;
+                case    "=="  : results = merge(results, everybody.filter(r => +r.age == number));  break;
+                case    ">="  : results = merge(results, everybody.filter(r => +r.age >= number));  break;
+                case    ">"   : results = merge(results, everybody.filter(r => +r.age >  number));  break;
+            }
+        }
         clearUpdate();
         results.forEach(e => plotAddress(e))
+        document.getElementById("count").innerText = results.length;
     }
     const merge = (a, b, predicate = (a, b) => a === b) => {
         const c = [...a]; // copy to avoid side effects
@@ -155,27 +175,29 @@ function handleRemoveRequest() {
 //  displayUpdate
 //      nice utility method to show message to user
 function displayUpdate(text) {
-    $('#updates').prepend($(`<li>${text}</li>`));
+    $('#updates').append($(`<li>${text}</li>`));
 }
 function clearUpdate() {
     $('#updates').empty();
 }
 
-
 let wardMembers = [];
 function plotAddress(who) {
-    // console.log(who.name + ' ' + who.long + ' ' + who.lat);
-    let marker = L.marker([who.lat, who.long]).addTo(map);      //  , {icon: dot}
+    var myIcon = L.icon({ iconUrl: 'images/red.jpg', iconSize: [10, 10] });
+
+    let marker = L.marker([who.lat, who.long], {icon: myIcon}).addTo(map);      //  , {icon: dot}
     wardMembers.push(marker);
 
     marker.bindPopup(`${who.name}<p>Adrs: ${who.address1}<p>Age: ${who.age}<p>Zip: ${who.zip}`).openPopup();
-    displayUpdate(`${who.name} ${who.address1}`);
+    let cblist = document.querySelector("#list");
+    if (cblist.checked)         displayUpdate(`${who.name}`);
     // var popup = L.popup();
     // popup
     //     .setLatLng({lat:lat, lng:long})
     //     .setContent(who)
     //     .openOn(map);
 }
+
 function talkToMe(text) {
     let speech = new SpeechSynthesisUtterance();
     speech.lang = "en-US";
